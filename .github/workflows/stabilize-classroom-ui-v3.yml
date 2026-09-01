@@ -1,0 +1,41 @@
+name: Stabilize Clover Lesson9 classroom UI v3
+
+on:
+  push:
+    paths:
+      - '.github/workflows/stabilize-classroom-ui-v3.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  stabilize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stabilize v3 runtime
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          replacements={
+            "if(question && q.completed){question.textContent=q.completed}": "if(question && q.completed && question.textContent!==q.completed){question.textContent=q.completed}",
+            ".map-toolbar-btn{font-size:14px!important;min-width:58px!important;padding:0 10px!important}": ".map-toolbar-btn{font-size:15px!important;min-width:88px!important;padding:0 12px!important}",
+            "mapBtn.textContent='MAP';": "mapBtn.textContent='全体地図';",
+          }
+          for old,new in replacements.items():
+              if old not in s:
+                  raise SystemExit(f'expected text not found: {old[:80]}')
+              s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit stabilization
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Stabilize Lesson9 classroom UI runtime'
+          git push
