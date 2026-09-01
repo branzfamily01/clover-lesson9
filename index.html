@@ -1374,7 +1374,7 @@ buildList(); render(); app.focus();
 .map-link{border:2px solid #d5d9e1;background:#f7f9fc;color:#15223a;border-radius:12px;padding:9px 12px;font-size:18px;font-weight:900;cursor:pointer;text-align:left}
 .map-link small{display:block;font-size:13px;color:#667188;font-weight:700;margin-top:3px;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .map-link:hover,.map-link:focus{border-color:#f2b24b;outline:none}
-.map-toolbar-btn{font-size:14px!important;min-width:58px!important;padding:0 10px!important}
+.map-toolbar-btn{font-size:15px!important;min-width:88px!important;padding:0 12px!important}
 
 /* Back Up Technique - Output画面を専用化 */
 .backup-screen{display:grid;gap:14px}
@@ -1431,7 +1431,7 @@ buildList(); render(); app.focus();
   const mapBtn=document.createElement('button');
   mapBtn.type='button';
   mapBtn.className='icon-btn map-toolbar-btn';
-  mapBtn.textContent='MAP';
+  mapBtn.textContent='全体地図';
   mapBtn.setAttribute('aria-label','Lesson9 全体地図');
   const menuBtn=document.getElementById('menuBtn');
   menuBtn?.insertAdjacentElement('afterend',mapBtn);
@@ -1473,7 +1473,7 @@ buildList(); render(); app.focus();
     stage.dataset.phase=p;
     if(!isAnswer||!q)return;
     const question=stage.querySelector('.question');
-    if(question && q.completed){question.textContent=q.completed}
+    if(question && q.completed && question.textContent!==q.completed){question.textContent=q.completed}
     const choices=stage.querySelector('.choice-grid');
     if(choices)choices.style.display='none';
     const audio=stage.querySelector('.question-card [data-action="speak-question"]');
