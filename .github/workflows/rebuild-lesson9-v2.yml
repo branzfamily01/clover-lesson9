@@ -1,0 +1,53 @@
+name: Rebuild Clover Lesson 9 v2
+
+on:
+  push:
+    paths:
+      - '.github/workflows/rebuild-lesson9-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Restore Gold Standard package
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .bootstrap/lesson9-v2.part00.b64 .bootstrap/lesson9-v2.part01.b64 .bootstrap/lesson9-v2.part02.b64 | base64 --decode > /tmp/clover-lesson9-v2.tar.gz
+          tar -xzf /tmp/clover-lesson9-v2.tar.gz
+          rm -f payload.part00.b64 payload.part01.b64
+          rm -f .github/workflows/build.yml
+          rm -rf .bootstrap
+          rm -f .github/workflows/rebuild-lesson9-v2.yml
+      - name: Validate rebuilt lesson
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check lesson-data.js
+          node --check lesson09-output-v1.js
+          node --check lesson-data-v1.js
+          node --check lesson-references-v1.js
+          node --check lesson09-learning-v1.js
+          node --check lesson09-enhance-v1.js
+          node --check validate.cjs
+          node validate.cjs
+          grep -q '<title>Clover Lesson 9</title>' index.html
+          grep -q '_engine/v1/engine.js' index.html
+          grep -q 'status":"review"' index.html
+      - name: Commit rebuilt lesson
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Rebuild Clover Lesson9 on Engine v1 Gold Standard'
+          git pull --rebase origin main
+          git push
