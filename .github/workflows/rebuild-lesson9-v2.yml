@@ -23,9 +23,10 @@ jobs:
           cat .bootstrap/lesson9-v2.part00.b64 .bootstrap/lesson9-v2.part01.b64 .bootstrap/lesson9-v2.part02.b64 | base64 --decode > /tmp/clover-lesson9-v2.tar.gz
           tar -xzf /tmp/clover-lesson9-v2.tar.gz
           rm -f payload.part00.b64 payload.part01.b64
-          rm -f .github/workflows/build.yml
           rm -rf .bootstrap
-          rm -f .github/workflows/rebuild-lesson9-v2.yml
+          # GITHUB_TOKEN cannot create/update workflow files. Keep workflow paths unchanged here;
+          # the connected GitHub tool will replace the temporary workflows after this push.
+          rm -f .github/workflows/validate.yml
       - name: Validate rebuilt lesson
         shell: bash
         run: |
