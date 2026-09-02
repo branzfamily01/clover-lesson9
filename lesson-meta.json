@@ -1,0 +1,18 @@
+{
+  "lessonId": "clover.lesson9",
+  "title": "Clover Lesson 9",
+  "lesson": "LESSON 9",
+  "status": "review",
+  "version": "2026-09-02",
+  "itemCount": 40,
+  "engine": "english-classroom-engine-v1",
+  "goldStandard": "Clover Lesson 8",
+  "authoritative": [
+    "Clover本冊 L09_本文",
+    "Clover公式解答 L09_解答"
+  ],
+  "supplementary": [
+    "高校英文法 Visual Grammar",
+    "一億人の英文法"
+  ]
+}
